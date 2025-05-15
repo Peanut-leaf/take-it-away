@@ -1,2 +1,2 @@
-print("Hello Luka!"
-      )
+print("Hello Luka!")
+#mml;v mvxl;l;vl;m vx.
