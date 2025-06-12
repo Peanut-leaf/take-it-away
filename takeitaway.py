@@ -1,5 +1,6 @@
 '''Hello, this is my takeaway program for a fast food service called take it away '''
 from tkinter import*
+from tkinter import font
 totalcost = 0
 finalorder = {}
 
@@ -24,122 +25,82 @@ alergymes = "This item contains ingredients that could cause alergens"
 welcomemes = "Welcome to Take it away, how can I help you today?"
 #Creates and places window on screen
 window = Tk()
-
-window.geometry("500x500")
-window.title("Take it away program")
+font.families()
+window.geometry("340x340")
+window.title("Take it away - Login Page")
 icon = PhotoImage(file="logo.png")
 window.iconphoto(True, icon)
-window.config(background= "#cc5200")
-
-
-wellabel = Label(window, 
-    text=welcomemes, 
-    bg="#ff0000", 
-    fg="black", 
-    font=("Arial", 10, "bold"), 
-    relief=RAISED, 
-    bd=5,
-    padx=10,
-    pady=5,
-    )
-wellabel.grid(row=0, column=0)
-
-Emaillabel = Label(window, Text="email: ")
-Emaillabel.grid(row=1, column=0)
-
-#Creates and places the entry boxes for email
-EmailEntry = Entry(window,
-    width=30,
-    font=('Arial', 10, 'bold'),
-    bg='white',
-    fg='black',
-    )  
-#email.insert(0, 'Enter your email here')
-EmailEntry.grid(row=2, column=0)
-
-#Creates and places the entry box for password
-PasswordEntry = Entry(window,
-    width=30,
-    font=('Arial', 10, 'bold'),
-    bg='white',
-    fg='black',
-    show='*'
-    )
-#password.insert(0, 'Enter your password here')
-PasswordEntry.grid(row=3, column=0)
-
-
-
-def delete():
-    EmailEntry.delete(0, END)
-    PasswordEntry.delete(0, END)
-    login_instruction_label.config(text="Please enter your email and password to continue",
-    font=('Arial', 10, 'bold'))
-def Submit():
-    Email_text = EmailEntry.get()
-    password_text = PasswordEntry.get()
-    if Email_text and password_text:
-        login_instruction_label.config(text=f"Welcome {Email_text}!")
-        print(f"Email: {Email_text}, Password: {password_text}"),
-        COMMAND=delete
-    else:
-        login_instruction_label.config(text="Please enter both email and password.",
-        font=('Arial', 10, 'bold'))
-
-submit = Button(window,
-    text='Submit',
-    font=('Arial', 10, 'bold'),
-    bg='#ff6200',
-    fg='black',
-    activebackground='#FF0000',
-    activeforeground='black',
-    command=Submit,)
-
-submit.grid(row=4, column=0, padx=10, pady=5)
+window.config(background= "#e4042c") #Sets the background colour of the window
 
 login_instruction_label = Label(window, 
     text="Please enter your email and password to continue", 
     bg="#ff0000", 
     fg="black", 
     font=("Arial", 10, "bold"), 
-    relief=RAISED, 
+    relief=GROOVE, 
     bd=5,
     padx=10,
     pady=5,
     )
-login_instruction_label.grid(row=5, column=0,)
+
+
+def login():
+    """This function is called when the login button is clicked."""
+    email = email_entry.get()
+    password = password_entry.get()
+    
+    # Here you would typically handle the login logic, e.g., checking credentials
+    if email and password:  # Simple check for non-empty fields
+        print(f"Email: {email}, Password: {password}")
+        login_instruction_label.config(text="Login successful!")
+    else:
+        login_instruction_label.config(text="Please enter valid credentials.")
+
+frame = Frame(bg="#e4042c")
+
+welcome_label = Label(frame, 
+    text="Welcome to Take it away!", 
+    bg="#e4042c", 
+    fg="black", 
+    font=("Arial", 8, "bold"),
+    relief=GROOVE,
+    bd=5,)
+
+email_label = Label(frame, 
+    text = "Email:", 
+    bg="#e4042c", 
+    fg="black", 
+    font=("Arial", 12))
+
+password_label = Label(frame, 
+    text = "Password:", 
+    bg="#e4042c", 
+    fg="black", 
+    font=("Arial", 12))
+
+email_entry = Entry(frame, font=("Arial", 12))
+# 'show' changes the password input makes it look like * but doesnt change value of the entry
+password_entry = Entry(frame, font=("Arial", 12), show='*') 
+
+login_button = Button(frame, 
+    text="Login", 
+    bg="#e4042c", 
+    fg="black", 
+    font=("Arial", 12, "bold"), 
+    command=login)
 
 
 
-
-#This is the function that will be called when the button is clicked
-#count = 0
-#def click():
-    #global count
-    #count+=1
-    #login_instruction_label.config(text=count)
-#button = Button(window,text='Click me!!!')
-#button.config(command=click) 
-#button.config(font=('Ink Free',10,'bold'))
-#button.config(bg='#ff6200')
-#button.config(fg='#fffb1f')
-#button.config(activebackground='#FF0000')
-#button.config(activeforeground='#fffb1f')
-#image = PhotoImage(file='point_emoji.png')
-#button.config(image=image)
-#button.config(compound='')
-#button.pack()
-#label = Label(window,text=count)
-#label.config(font=('Monospace',40))
-#label.pack()
+#Placing widgets on the screen
+welcome_label.grid(row=0, column=0, columnspan=2, sticky="news" ,pady=35)
+email_label.grid(row=1, column=0)
+email_entry.grid(row=1, column=1)
+password_label.grid(row=2, column=0)
+password_entry.grid(row=2, column=1)
+login_button.grid(row=3, column=0, columnspan=2, pady=20)
+login_instruction_label.grid(row=4, column=0,)
 
 
+
+frame.grid(row=0, column=0, padx=10, pady=10, sticky="news")
 window.mainloop()
-
-
-
-#if welcomemes == 'menu':
-    #for menu in fullmenu:
-        #print(menu)
-  
-#print(*fullmenu, sep =', ')
