@@ -22,67 +22,99 @@ drinkprice = {'coke': 2.50, 'sprite': 2.50, 'fanta': 2.50, 'lmp': 2.50}
 
 alergies = {}
 alergymes = "This item contains ingredients that could cause alergens"
-welcomemes = "Welcome to Take it away, how can I help you today?"
 #Creates and places window on screen
-window = Tk()
+login_window = Tk()
 font.families()
-window.geometry("340x340")
-window.title("Take it away - Login Page")
+login_window.geometry("340x340")
+login_window.title("Take it away - Login Page")
 icon = PhotoImage(file="logo.png")
-window.iconphoto(True, icon)
-window.config(background= "#e4042c") #Sets the background colour of the window
-
-login_instruction_label = Label(window, 
-    text="Please enter your email and password to continue", 
-    bg="#ff0000", 
-    fg="black", 
-    font=("Arial", 10, "bold"), 
-    relief=GROOVE, 
-    bd=5,
-    padx=10,
-    pady=5,
-    )
+login_window.iconphoto(True, icon)
+login_window.config(background= "#e4042c") #Sets the background colour of the window
+login_window.resizable(False, False)  # Prevents resizing of the window
+login_window.bind("<Return>", lambda event: login())  # Allows pressing Enter to trigger login
+login_window.bind("<Escape>", lambda event: login_window.destroy())  # Allows pressing Escape to close the window
+login_window.bind("<FocusIn>", lambda event: login_instruction_label.config(text="Please enter your email and password to continue."))  # Reset instruction label when the window gains focus
+login_window.protocol("WM_DELETE_WINDOW", login_window.destroy)  # Ensures the window closes properly when the X button is clicked
+# Function to handle login logic   
 
 
 def login():
     """This function is called when the login button is clicked."""
     email = email_entry.get()
     password = password_entry.get()
-    
     # Here you would typically handle the login logic, e.g., checking credentials
     if email and password:  # Simple check for non-empty fields
         print(f"Email: {email}, Password: {password}")
-        login_instruction_label.config(text="Login successful!")
+        menu_window = Tk()  # Create a new window for the menu
+        menu_window.title("Take it away - Menu")
+        menu_window.geometry("400x400")
+        menu_window.config(background="#e4042c")
+        # Create a label to display the welcome message
+        name = name_entry.get()  # Get the name from the entry field
+        menu_label = Label(menu_window, text=(f"Welcome to take it away {name}! "), bg="#e4042c", fg="black", font=("Arial", 12, "bold"))
+        menu_label.pack(pady=20)
+        # Here you would add the menu items and functionality
+        # For now, just a placeholder label
+        menu_items_label = Label(menu_window, text="Menu items will be displayed here.", bg="#e4042c", fg="black", font=("Arial", 10))
+        menu_items_label.pack(pady=10)
+        # Close the login window
+        login_frame.destroy()
+        login_window.destroy()  # Close the main window
+           
     else:
-        login_instruction_label.config(text="Please enter valid credentials.")
+        login_instruction_label.config(text="Please enter valid email and password to continue")
+ # Ensure the login frame is destroyed when the menu window opens
 
-frame = Frame(bg="#e4042c")
 
-welcome_label = Label(frame, 
+
+
+# ----------Creating the login frame----------
+login_frame = Frame(bg="#e4042c")  # Frame for the login page
+
+# ----------Labels for the login page----------
+welcome_label = Label(login_frame, 
     text="Welcome to Take it away!", 
     bg="#e4042c", 
     fg="black", 
-    font=("Arial", 8, "bold"),
+    font=("Arial", 9, "bold"),
     relief=GROOVE,
     bd=5,)
 
-email_label = Label(frame, 
+email_label = Label(login_frame, 
     text = "Email:", 
     bg="#e4042c", 
     fg="black", 
     font=("Arial", 12))
 
-password_label = Label(frame, 
+password_label = Label(login_frame, 
     text = "Password:", 
     bg="#e4042c", 
     fg="black", 
     font=("Arial", 12))
 
-email_entry = Entry(frame, font=("Arial", 12))
-# 'show' changes the password input makes it look like * but doesnt change value of the entry
-password_entry = Entry(frame, font=("Arial", 12), show='*') 
+name_label = Label(login_frame,  
+    text = "Name:", 
+    bg="#e4042c", 
+    fg="black", 
+    font=("Arial", 12))
+    
+login_instruction_label = Label(login_frame, 
+    text="Please enter your email and password to continue.", 
+    bg="#ff0000", 
+    fg="black", 
+    font=("Arial", 10, "bold"), 
+    relief=GROOVE,
+    )
 
-login_button = Button(frame, 
+
+# ----------Entry widgets for user input----------
+
+email_entry = Entry(login_frame, font=("Arial", 12))
+# 'show' changes the password input makes it look like * but doesnt change value of the entry
+password_entry = Entry(login_frame, font=("Arial", 12), show='*') 
+name_entry = Entry(login_frame, font=("Arial", 12))
+
+login_button = Button(login_frame, 
     text="Login", 
     bg="#e4042c", 
     fg="black", 
@@ -91,16 +123,22 @@ login_button = Button(frame,
 
 
 
-#Placing widgets on the screen
+
+
+
+
+# ----------Placing widgets on the screen----------
 welcome_label.grid(row=0, column=0, columnspan=2, sticky="news" ,pady=35)
-email_label.grid(row=1, column=0)
-email_entry.grid(row=1, column=1)
-password_label.grid(row=2, column=0)
-password_entry.grid(row=2, column=1)
-login_button.grid(row=3, column=0, columnspan=2, pady=20)
-login_instruction_label.grid(row=4, column=0,)
+name_entry.grid(row=1, column=1)
+name_label.grid(row=1, column=0)
+email_label.grid(row=2, column=0)
+email_entry.grid(row=2, column=1)
+password_label.grid(row=3, column=0)
+password_entry.grid(row=3, column=1)
+login_button.grid(row=4, column=0, columnspan=2, pady=10, sticky="news")
+login_instruction_label.grid(row=5, column=0, columnspan=2, sticky="news")
 
 
 
-frame.grid(row=0, column=0, padx=10, pady=10, sticky="news")
-window.mainloop()
+login_frame.grid(row=0, column=0, padx=10, pady=10, sticky="news")
+login_window.mainloop()
