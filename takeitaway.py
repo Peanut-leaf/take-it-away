@@ -144,13 +144,14 @@ style.configure('orderTotalLabel.TLabel', background = "#111924", font = ("Verda
 style.configure('orderTransaction.TLabel', background = "#93949a", font = ('Verdana', 12), foreground = "white", wraplength = 170, anchor = "nw", padding = (3, 3, 3, 3) )
 
 # -------------------- Widgets --------------------
-
 mainFrame = ttk.Frame(menu_window, width= 800, height = 500, style="MainMenuFrame.TFrame")
 
 
 
 #Kia Ora Luka
 
+RestaurantBannerLabel = Label(topBannerFrame, image = TopBannerImage, background = "#111924")
+RestaurantBannerLabel.grid(row = 0, column = 1, sticky = "news")
 
 
 
