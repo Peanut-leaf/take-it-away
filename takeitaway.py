@@ -4,23 +4,13 @@ from tkinter import ttk
 from tkinter import font
 from PIL import Image, ImageTk 
 import os
-#These are lists holding the items for the seperate catagories
-bucketmenu = ['20pc', '12pc', '10pc', '6pc']
-burgermenu = ['tower', 'zinger', 'grilled', 'crispy', 'mcchicken']
-sidemenu = ['chips', 'potato and gravy', 'coleslaw', 'nuggets']
-sausemenu = ['bbq', 'tomato', 'garlic aoli']
-drinkmenu = ['coke', 'sprite', 'fanta', 'lmp']
-fullmenu = [bucketmenu + burgermenu + sidemenu + sausemenu + drinkmenu]
+import random
+from datetime import date
+from datetime import datetime
 
-#These are dictionaries holding the price of all the items 
-bucketprice = {'20pc': 49.99, '12pc': 29.99, '10pc': 24.99, '6pc': 14.99 }
-burgerprice = {'tower': 14.99,'zinger': 12.99, 'grilled': 11.99, 'crispy': 8.99, 'mcchicken': 4.99 }
-sideprice = {'chips': 4.99, 'potato and gravy': 4.99, 'coleslaw': 3.99, 'nuggets': 6.99 }
-sauseprice = {'bbq': 0.99, 'tomato': 0.99, 'garlic aoli': 0.99}
-drinkprice = {'coke': 2.50, 'sprite': 2.50, 'fanta': 2.50, 'lmp': 2.50}
 
-alergies = {}
-alergymes = "This item contains ingredients that could cause alergens"
+Foodprices = {"Chicken Bucket": 30, "Chicken Pieces": 5, "Chicken Burger": 10, "Crispy Chips": 3, "Saucy Sauce": 1, "Fizzy Drink": 2}
+
 #Creates and places window on screen
 login_window = Tk()
 icon = PhotoImage(file="iconlogo.png")
@@ -121,14 +111,12 @@ login_window.mainloop()
 
 if login_window != None: 
     menu_window = Tk()  
-    menu_window.geometry("950x600")  
+    menu_window.geometry("940x546")  
     menu_window.title("Take it away - Menu")  
     menu_window.config(background="#355aa9")  
     menu_window.resizable(False, False)
     menu_window.bind("<Escape>", lambda event: menu_window.destroy()) 
     icon = PhotoImage(file="iconlogo.png")
- 
-
  
 # -------------------- Styling --------------------
 style = ttk.Style()
@@ -137,13 +125,171 @@ style.configure("MainMenuFrame.TFrame", background="#1d284b")
 style.configure("MenuFrame.TFrame", background="#355aa9")
 style.configure("FoodDisplayFrame.TFrame", background="#111924")
 style.configure("OrderFrame.TFrame", background="#4870b5")    
-style.configure("FoodFrame.TFrame", background = "#93949a", relief = "GROOVE")
-style.configure("SelectedFood.TFrame", background = "#d08f74")
+style.configure("FoodFrame.TFrame", background = "#93949a", relief = GROOVE)
+style.configure("SelectedFood.TFrame", background = "#98FBCB", relief = GROOVE)
 
-style.configure('MenuLabel.TLabel',background = "#111924", font = ("Verdana", 10), foreground = "white", padding = (5, 5, 5, 5), width = 21 )
+style.configure('MenuLabel.TLabel',background = "#111924", font = ("Verdana", 10), foreground = "white", padding = (7, 5, 5, 7), width = 21 )
 style.configure('orderTotalLabel.TLabel', background = "#111924", font = ("Verdana", 10, "bold"), foreground = "white", padding = (2, 2, 2, 2), anchor = "w" )
 style.configure('orderTransaction.TLabel', background = "#93949a", font = ('Verdana', 12), foreground = "white", 
-                wraplength = 170, anchor = "nw", padding = (3, 3, 3, 3))
+                wraplength = 200, anchor = "nw", padding = (3, 3, 3, 3))
+
+
+
+# -------------------- Functions --------------------
+def displaychickenbucket():
+    ChickenbucketFrame.configure(relief = GROOVE, style = "SelectedFood.TFrame")
+    
+    # Reset all other food frames to default style
+    ChickenPieceFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    BurgerFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    ChipsFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    SauceFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    DrinkFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+
+    displayLabel.configure(image = ChickenbucketImage, text = "Chicken Bucket", style = "MenuLabel.TLabel",
+                           compound = "bottom", foreground= "white", padding = (5, 5, 5, 5))
+    
+def displaychickenpiece():
+
+    ChickenPieceFrame.configure(relief = GROOVE, style = "SelectedFood.TFrame")
+
+    ChickenbucketFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    BurgerFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    ChipsFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    SauceFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    DrinkFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+
+    displayLabel.configure(image = ChickenPieceImage, text = "Chicken Pieces", style = "MenuLabel.TLabel",
+                           compound = "bottom", foreground= "white", padding = (5, 5, 5, 5))
+    
+def displaychickenburger():
+    BurgerFrame.configure(relief = GROOVE, style = "SelectedFood.TFrame")
+
+    ChickenbucketFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    ChickenPieceFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    ChipsFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    SauceFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    DrinkFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+
+    displayLabel.configure(image = BurgerImage, text = "Chicken Burger", style = "MenuLabel.TLabel",
+                           compound = "bottom", foreground= "white", padding = (5, 5, 5, 5))
+    
+def displayChips():
+    ChipsFrame.configure(relief = GROOVE, style = "SelectedFood.TFrame")
+
+    ChickenbucketFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    ChickenPieceFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    BurgerFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    SauceFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    DrinkFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+
+    displayLabel.configure(image = ChipsImage, text = "Crispy Chips", style = "MenuLabel.TLabel",
+                           compound = "bottom", foreground= "white", padding = (5, 5, 5, 5))
+    
+def displaySauce():
+    SauceFrame.configure(relief = GROOVE, style = "SelectedFood.TFrame")   
+
+    ChickenbucketFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    ChickenPieceFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    BurgerFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    ChipsFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    DrinkFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+
+    displayLabel.configure(image = SauceImage, text = "Saucy Sauce", style = "MenuLabel.TLabel",
+                           compound = "bottom", foreground= "white", padding = (5, 5, 5, 5))
+    
+def displayDrink():
+    DrinkFrame.configure(relief = GROOVE, style = "SelectedFood.TFrame")
+
+    ChickenPieceFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    ChickenbucketFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    BurgerFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    ChipsFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+    SauceFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
+
+    displayLabel.configure(image = DrinkImage, text = "Fizzy Drink", style = "MenuLabel.TLabel",
+                           compound = "bottom", foreground= "white", padding = (5, 5, 5, 5))
+
+
+def add():
+    current_order = orderTransaction.cget("text")
+    selected_food = displayLabel.cget("text") + " - $" + str(Foodprices[displayLabel.cget("text")])
+    if current_order.strip():
+        order = current_order + "\n" + selected_food
+    else:
+        order = selected_food
+    orderTransaction.configure(text=order)
+    
+    # Update the total price
+    order_total = orderTotalLabel.cget("text").replace("TOTAL : ", "")
+    order_total = order_total.replace("$", "")
+    updated_total = int(order_total) + Foodprices[displayLabel.cget("text")]
+    orderTotalLabel.configure(text="TOTAL : " + str(updated_total) + "$")
+
+def remove():
+    current_order = orderTransaction.cget("text")
+    displayed_food = displayLabel.cget("text")  
+
+    if current_order.strip():
+        order_lines = current_order.split("\n")
+        
+        # Find and remove the line that matches the displayed food
+        for line in order_lines:
+            if line.startswith(displayed_food):
+                order_lines.remove(line)
+                # Update total price by subtracting the price of the displayed food and replacing the $ with nothing so it can be transformed into an integer
+                order_total = orderTotalLabel.cget("text").replace("TOTAL : ", "")
+                order_total = order_total.replace("$", "")
+                updated_total = int(order_total) - Foodprices[displayed_food]
+                orderTotalLabel.configure(text="TOTAL : " + str(updated_total) + "$")                
+                break 
+
+        # Join the remaining lines back into a single string
+        updated_order = "\n".join(order_lines)
+        orderTransaction.configure(text=updated_order)
+    else:
+        orderTransaction.configure(text="")
+
+def generate_order_id():
+    numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    order_id = "TIA - "
+    random_letters = ""
+    random_numbers = ""
+    for i in range(0,3):
+        random_letters += random.choice(letters)
+        random_numbers += str(random.choice(numbers))
+
+    order_id += random_letters + random_numbers
+    return order_id
+
+def order():
+    new_reciept = orderIDLabel.cget("text")
+    new_reciept = new_reciept.replace("ORDER ID : ", "")
+    total_transaction = orderTransaction.cget("text").split("\n") 
+    total_transaction = [item.strip() for item in total_transaction if item.strip()]
+
+    order_day = date.today()
+    order_time = datetime.now()
+
+    #Create a reciept file with user's total order price and date times
+    with open(new_reciept, "w") as file:
+        file.write("Take it away" + "\n")
+        file.write("------------------------------------" + "\n")
+        file.write(order_day.strftime("%x") + "\n")
+        file.write(order_time.strftime("%H:%M:%p") + "\n\n")
+        file.write("Items Ordered:"+ "\n")
+        for item in total_transaction:
+            file.write(item + "\n")
+        file.write("\n\n")
+        file.write(orderTotalLabel.cget("text") + "\n")
+    
+    #Reset the order display for the next customer. 
+    orderTotalLabel.configure(text = "Total : $0")
+    orderIDLabel.configure(text = "ORDER ID : " + generate_order_id())
+    orderTransaction.configure(text = "")
+
+
 
 # -------------------- Images --------------------
 
@@ -156,7 +302,7 @@ TopBannerImageObject = Image.open("Images/Top banner options/topimage2.jpg").res
 TopBannerImage = ImageTk.PhotoImage(TopBannerImageObject)
 
 # Deafult image for when no food is selected
-PlaceholderimageObject = Image.open("Images/place holder v1.jpg").resize((350, 360))
+PlaceholderimageObject = Image.open("Images/place holder v3.jpg").resize((350, 360))
 PlaceholderImage = ImageTk.PhotoImage(PlaceholderimageObject)
 
 
@@ -228,7 +374,7 @@ orderTitleLabel.configure(
 )
 orderTitleLabel.grid(row = 0, column = 0, sticky = "EW")
 
-orderIDLabel = ttk.Label(OrderFrame, text = "ORDER ID : ")
+orderIDLabel = ttk.Label(OrderFrame, text = "ORDER ID : " + generate_order_id())
 orderIDLabel.configure(
     background = "black",
     foreground = "white",
@@ -240,10 +386,10 @@ orderIDLabel.grid(row = 1, column = 0, sticky = "EW", pady = 1)
 orderTransaction = ttk.Label(OrderFrame, style = 'orderTransaction.TLabel')
 orderTransaction.grid(row = 2, column = 0, sticky = "NSEW")
 
-orderTotalLabel = ttk.Label(OrderFrame, text = "TOTAL : 0$", style = "orderTotalLabel.TLabel")
+orderTotalLabel = ttk.Label(OrderFrame, text = "TOTAL : $0", style = "orderTotalLabel.TLabel")
 orderTotalLabel.grid(row = 3, column = 0, sticky = "EW")
 
-orderButton = ttk.Button(OrderFrame, text = "ORDER")
+orderButton = ttk.Button(OrderFrame, text = "ORDER", command= order)
 orderButton.grid(row = 4, column = 0, sticky = "EW")
 
 
@@ -252,10 +398,10 @@ displayLabel.configure(background = "#111924")
 displayLabel.grid(row = 0, column = 0 , sticky = "NSEW", columnspan = 2)
 
 
-addOrderButton = ttk.Button(displayFrame, text = "ADD TO ORDER")
+addOrderButton = ttk.Button(displayFrame, text = "ADD TO ORDER", command = add)
 addOrderButton.grid(row = 1, column = 0, padx = 2, sticky = "NSEW")
 
-removeOrderButton = ttk.Button(displayFrame, text = "REMOVE")
+removeOrderButton = ttk.Button(displayFrame, text = "REMOVE", command = remove)
 removeOrderButton.grid(row = 1, column = 1, padx = 2, sticky = "NSEW")
 
 # -------------------- Food Labels --------------------
@@ -290,22 +436,22 @@ DrinkLabel = ttk.Label(DrinkFrame, text="Fizzy Drinks         $2", style="MenuLa
 DrinkLabel.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
 # -------------------- Food Display Buttons ---------------------
-ChickenbucketDisplayButton = ttk.Button(ChickenbucketFrame, text ="Display")
+ChickenbucketDisplayButton = ttk.Button(ChickenbucketFrame, text ="Display", command= displaychickenbucket)
 ChickenbucketDisplayButton.grid(row = 0, column = 1, padx = 10)
 
-ChickenPieceDisplayButton = ttk.Button(ChickenPieceFrame, text ="Display")
+ChickenPieceDisplayButton = ttk.Button(ChickenPieceFrame, text ="Display", command= displaychickenpiece)
 ChickenPieceDisplayButton.grid(row = 0, column = 1, padx = 10)
 
-BurgerDisplayButton = ttk.Button(BurgerFrame, text ="Display")
+BurgerDisplayButton = ttk.Button(BurgerFrame, text ="Display" , command= displaychickenburger)
 BurgerDisplayButton.grid(row = 0, column = 1, padx = 10)
 
-ChipsDisplayButton = ttk.Button(ChipsFrame, text ="Display")
+ChipsDisplayButton = ttk.Button(ChipsFrame, text ="Display", command= displayChips)
 ChipsDisplayButton.grid(row = 0, column = 1, padx = 10)
 
-SauceDisplayButton = ttk.Button(SauceFrame, text ="Display")
+SauceDisplayButton = ttk.Button(SauceFrame, text ="Display", command= displaySauce)
 SauceDisplayButton.grid(row = 0, column = 1, padx = 10)
 
-DrinkDisplayButton = ttk.Button(DrinkFrame, text ="Display")
+DrinkDisplayButton = ttk.Button(DrinkFrame, text ="Display", command= displayDrink)
 DrinkDisplayButton.grid(row = 0, column = 1, padx = 10)
 
 # -------------------- Configuring Grids --------------------
