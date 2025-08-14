@@ -1,4 +1,4 @@
-"""Hello, this is my takeaway program for a fast food service called take it away """
+"""Hello, this is my takeaway program for a fast food service called take it away made by Luka Maaloga, on 15/08/25"""
 
 # Importing nescessary libraries
 from tkinter import*
@@ -14,6 +14,7 @@ Foodprices = {"Chicken Bucket": 30, "Chicken Pieces": 5, "Chicken Burger": 10, "
 new_reciept = ""
 
 def disable():
+    """This function is used to disable the close button on the login window."""
     pass
 
 #Creates and places window on screen
@@ -32,8 +33,8 @@ login_window.bind("<End>", lambda event: login_window.destroy())
 login_window.bind("<FocusIn>", lambda event: login_instruction_label.config(text="Please enter your email and password"))
 login_window.protocol("WM_DELETE_WINDOW", disable)
 
-# Login function checks if user is entring correct information and closes if info is correct 
 def login():
+    """This function is used to check if the user has entered the correct information and closes the login window if it is correct."""
     email = email_entry.get()
     password = password_entry.get()
     name = name_entry.get()
@@ -46,7 +47,6 @@ def login():
     else:
         login_window.destroy() 
         print(f"Login successful for {name} with email {email}.") 
-
 
 # -------------------- Creating the login frame --------------------
 login_frame = Frame(background = "#355aa9")  
@@ -144,6 +144,8 @@ style.configure('orderTransaction.TLabel', background = "#93949a", font = ('Verd
 # -------------------- Functions --------------------
 # Functions for displaying individual food items and updating the display label with the correct image and text
 def displaychickenbucket():
+    """"This function is used to display the chicken bucket food item when the user clicks on the display button for it."""
+    # Changes the background colour of selected food item to show user which food they have selected
     ChickenbucketFrame.configure(relief = GROOVE, style = "SelectedFood.TFrame")
     
     # Reset all other food frames to default style
@@ -154,9 +156,9 @@ def displaychickenbucket():
     DrinkFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
     displayLabel.configure(image = ChickenbucketImage, text = "Chicken Bucket", style = "MenuLabel.TLabel",
                            compound = "bottom", foreground= "white", padding = (5, 5, 5, 5))
-    
-def displaychickenpiece():
 
+def displaychickenpiece():
+    """"This function is used to display the chicken piece food item when the user clicks on the display button for it.""" 
     ChickenPieceFrame.configure(relief = GROOVE, style = "SelectedFood.TFrame")
 
     ChickenbucketFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
@@ -166,8 +168,10 @@ def displaychickenpiece():
     DrinkFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
     displayLabel.configure(image = ChickenPieceImage, text = "Chicken Pieces", style = "MenuLabel.TLabel",
                            compound = "bottom", foreground= "white", padding = (5, 5, 5, 5))
-    
+
+       
 def displaychickenburger():
+    """"This function is used to display the chicken burger food item when the user clicks on the display button for it.""" 
     BurgerFrame.configure(relief = GROOVE, style = "SelectedFood.TFrame")
 
     ChickenbucketFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
@@ -179,6 +183,7 @@ def displaychickenburger():
                            compound = "bottom", foreground= "white", padding = (5, 5, 5, 5))
     
 def displayChips():
+    """"This function is used to display the chips food item when the user clicks on the display button for it.""" 
     ChipsFrame.configure(relief = GROOVE, style = "SelectedFood.TFrame")
 
     ChickenbucketFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
@@ -190,6 +195,7 @@ def displayChips():
                            compound = "bottom", foreground= "white", padding = (5, 5, 5, 5))
     
 def displaySauce():
+    """"This function is used to display the sauce food item when the user clicks on the display button for it.""" 
     SauceFrame.configure(relief = GROOVE, style = "SelectedFood.TFrame")   
 
     ChickenbucketFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
@@ -201,6 +207,7 @@ def displaySauce():
                            compound = "bottom", foreground= "white", padding = (5, 5, 5, 5))
     
 def displayDrink():
+    """"This function is used to display the drinks food item when the user clicks on the display button for it.""" 
     DrinkFrame.configure(relief = GROOVE, style = "SelectedFood.TFrame")
 
     ChickenPieceFrame.configure(relief = GROOVE, style = "FoodFrame.TFrame")
@@ -213,6 +220,7 @@ def displayDrink():
 
 # Add function that allows user to add food to their order and updates the total price
 def add():
+    """This function is used to add the selected food item to the order and update the total price."""
     current_order = orderTransaction.cget("text")
     if displayLabel.cget("text") == "":
         orderTransaction.configure(text="Please select a food item to add to your order.")
@@ -225,7 +233,7 @@ def add():
         order = selected_food
     orderTransaction.configure(text=order)
     
-    # Update the total price
+    # Update the display label to show the selected food item
     order_total = orderTotalLabel.cget("text").replace("TOTAL : ", "")
     order_total = order_total.replace("$", "")
     # Check if order_total is a digit, if not set it to 0
@@ -235,6 +243,7 @@ def add():
 
 # Remove function that allows user to remove unwanted food from their order where ever it is. eg first item or middle of the order
 def remove():
+    """This function is used to remove the selected food item from the order and update the total price."""
     current_order = orderTransaction.cget("text")
     displayed_food = displayLabel.cget("text")  
 
@@ -258,8 +267,9 @@ def remove():
     else:
         orderTransaction.configure(text="")
 
-#Generates a random order ID for the user to identify their order
+
 def generate_order_id():
+    """This function generates a random order ID for the users order."""
     numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
     order_id = "TIA - "
@@ -273,8 +283,9 @@ def generate_order_id():
     return order_id
 
 
-# Function that creates a reciept file with the user's order details, eg price, date/time, etc
+
 def order():
+    """This function is used to create a reciept file with the user's order details."""
     new_reciept = orderIDLabel.cget("text")
     new_reciept = new_reciept.replace("ORDER ID : ", "")
     total_transaction = orderTransaction.cget("text").split("\n") 
