@@ -18,10 +18,11 @@ def disable():
 
 #Creates and places window on screen
 login_window = Tk()
-icon = PhotoImage(file="iconlogo.png")
+IconImageObject = Image.open("Images/iconlogo.png")
+IconImage = ImageTk.PhotoImage(IconImageObject)
 login_window.geometry("340x340")
 login_window.title("Take it away - Login Page")
-login_window.iconphoto(True, icon)  # Set the window icon
+login_window.iconphoto(True, IconImage)  # Set the window icon
 
 #Add background colour, make the window not resizable, bind basic key commands, and disable close button for user.
 login_window.config(background= "#355aa9") 
@@ -31,23 +32,20 @@ login_window.bind("<End>", lambda event: login_window.destroy())
 login_window.bind("<FocusIn>", lambda event: login_instruction_label.config(text="Please enter your email and password"))
 login_window.protocol("WM_DELETE_WINDOW", disable)
 
-
+# Login function checks if user is entring correct information and closes if info is correct 
 def login():
     email = email_entry.get()
     password = password_entry.get()
     name = name_entry.get()
     if email and password == "":
-        login_instruction_label.config(text="Please enter valid email and password to continue")
-    elif "@" not in email or "." not in email:  
+        login_instruction_label.config(text="Please enter email and password")
+    elif "@" not in email or "." not in email: 
         login_instruction_label.config(text="Please enter a correct email address.")
     elif len(password) < 6:  
         login_instruction_label.config(text="Password be at least 6 letters long.")
-
     else:
-        login_instruction_label.config(text=f"Welcome {name}! You are now logged in.")
-        
-        print (f"New customer: Name - {name}, Email - {email} " )
         login_window.destroy() 
+        print(f"Login successful for {name} with email {email}.") 
 
 
 # -------------------- Creating the login frame --------------------
@@ -127,7 +125,6 @@ if login_window != None:
     menu_window.resizable(False, False)
     menu_window.bind("<End>", lambda event: menu_window.destroy()) 
     menu_window.protocol("WM_DELETE_WINDOW", disable)
-    icon = PhotoImage(file="iconlogo.png")
  
 # -------------------- Styling --------------------
 # Creating styles for the frames to make them more appealing and easier for the users to read
@@ -214,10 +211,14 @@ def displayDrink():
     displayLabel.configure(image = DrinkImage, text = "Fizzy Drink", style = "MenuLabel.TLabel",
                            compound = "bottom", foreground= "white", padding = (5, 5, 5, 5))
 
-#Add function that allows user 
+# Add function that allows user to add food to their order and updates the total price
 def add():
     current_order = orderTransaction.cget("text")
+    if displayLabel.cget("text") == "":
+        orderTransaction.configure(text="Please select a food item to add to your order.")
+        return
     selected_food = displayLabel.cget("text") + " - $" + str(Foodprices[displayLabel.cget("text")])
+
     if current_order.strip():
         order = current_order + "\n" + selected_food
     else:
@@ -227,6 +228,7 @@ def add():
     # Update the total price
     order_total = orderTotalLabel.cget("text").replace("TOTAL : ", "")
     order_total = order_total.replace("$", "")
+    # Check if order_total is a digit, if not set it to 0
     order_total = int(order_total) if order_total.isdigit() else 0
     updated_total = order_total + Foodprices[displayLabel.cget("text")]
     orderTotalLabel.configure(text="TOTAL : " + str(updated_total) + "$")
@@ -270,6 +272,8 @@ def generate_order_id():
     order_id += random_letters + random_numbers
     return order_id
 
+
+# Function that creates a reciept file with the user's order details, eg price, date/time, etc
 def order():
     new_reciept = orderIDLabel.cget("text")
     new_reciept = new_reciept.replace("ORDER ID : ", "")
@@ -378,6 +382,7 @@ orderTitleLabel.configure(
 )
 orderTitleLabel.grid(row = 0, column = 0, sticky = "EW")
 
+# Puts the randomly generated order ID on the screen for the user to see
 orderIDLabel = ttk.Label(OrderFrame, text = "ORDER ID : " + generate_order_id())
 orderIDLabel.configure(
     background = "black",
@@ -407,6 +412,7 @@ removeOrderButton = ttk.Button(displayFrame, text = "REMOVE", command = remove)
 removeOrderButton.grid(row = 1, column = 1, padx = 2, sticky = "NSEW")
 
 # -------------------- Food Labels --------------------
+
 LogoLabel = ttk.Label(topBannerFrame, image = LogoImage, background = "#111924")
 LogoLabel.grid(row = 0, column = 0, sticky = "W")
 
@@ -436,6 +442,7 @@ DrinkLabel = ttk.Label(DrinkFrame, text="Fizzy Drinks         $2", style="MenuLa
 DrinkLabel.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
 # -------------------- Food Display Buttons ---------------------
+# Buttons for displaying food items with individual functions 
 ChickenbucketDisplayButton = ttk.Button(ChickenbucketFrame, text ="Display", command= displaychickenbucket)
 ChickenbucketDisplayButton.grid(row = 0, column = 1, padx = 10)
 
